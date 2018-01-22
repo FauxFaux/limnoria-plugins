@@ -1306,8 +1306,6 @@ class SpiffyTitles(callbacks.Plugin):
                 content_types = map(lambda s: s.split(';')[0], content_types)
                 log.debug("SpiffyTitles: content type %s" % (content_types))
 
-                
-
                 if set(content_types) & set(acceptable_types):
                     text = request.content
 
