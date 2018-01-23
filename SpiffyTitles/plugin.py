@@ -1300,22 +1300,22 @@ class SpiffyTitles(callbacks.Plugin):
 
             if request.status_code == requests.codes.ok:
                 # Check the content type which comes in the format: "text/html; charset=UTF-8"
-                content_type = request.headers.get("content-type").split(";")[0].strip()
                 acceptable_types = self.registryValue("mimeTypes")
 
-                log.debug("SpiffyTitles: content type %s" % (content_type))
+                content_types = request.headers.get("content-type").split(",")
+                content_types = map(lambda s: s.split(';')[0], content_types)
+                log.debug("SpiffyTitles: content type %s" % (content_types))
 
-                if content_type in acceptable_types:
+                if set(content_types) & set(acceptable_types):
                     text = request.content
 
                     if text:
                         return (text, is_redirect)
                     else:
                         log.debug("SpiffyTitles: empty content from %s" % (url))
-
                 else:
-                    log.debug("SpiffyTitles: unacceptable mime type %s for url %s" %
-                              (content_type, url))
+                    log.debug("SpiffyTitles: unacceptable mime types %s for url %s" %
+                              (content_types, url))
             else:
                 log.error("SpiffyTitles HTTP response code %s - %s" % (request.status_code,
                                                                        request.content))
