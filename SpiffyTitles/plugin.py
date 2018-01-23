@@ -1303,7 +1303,7 @@ class SpiffyTitles(callbacks.Plugin):
                 acceptable_types = self.registryValue("mimeTypes")
 
                 content_types = request.headers.get("content-type").split(",")
-                content_types = map(lambda s: s.split(';')[0], content_types)
+                content_types = list(map(lambda s: s.split(';')[0].strip(), content_types))
                 log.debug("SpiffyTitles: content type %s" % (content_types))
 
                 if set(content_types) & set(acceptable_types):
